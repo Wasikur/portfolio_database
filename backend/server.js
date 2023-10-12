@@ -9,10 +9,13 @@ app.use(cors());
 
 // Establishing connection with database
 mongoose
-  .connect("mongodb://127.0.0.1:27017/projects", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://rwasikur:rwasikur@portfolio-projects.pin2t9j.mongodb.net/projects?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -29,7 +32,7 @@ const projectSchema = new mongoose.Schema({
 });
 
 // Mongoose Model
-const Projectmodel = new mongoose.model("projectCardDetails", projectSchema);
+const Projectmodel = new mongoose.model("projectcarddetails", projectSchema);
 
 // Create document or insert a document
 const createDocument = async () => {
@@ -73,14 +76,13 @@ const getDocument = async () => {
 
 getDocument();
 
-app.use("/", (req, res) => {
-  getDocument();
-  // res.send("Backend is linked");
-});
+// app.use("/", (req, res) => {
+//   getDocument();
+// res.send("Backend is linked");
+// });
 app.get("/", async (req, res) => {
   try {
-    // Your database query or data retrieval code here
-    const data = await fetchDataFromDatabase();
+    const data = await Projectmodel.find();
     res.json(data);
   } catch (error) {
     console.error("Error while fetching data:", error);
